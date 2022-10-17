@@ -16,7 +16,7 @@ You must configure the email credentials to send emails, in the .env file.
 
     php artisan serve
 
-# REST API PAYMENT CLIENTE
+# REST API
 
 Following we have a sequence of requests that will be used to test the API.
 
