@@ -1,66 +1,147 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# REST API PAYMENT CLIENTE
 
-## About Laravel
+Following we have a sequence of instructions to install and run the app.
+You need to create a database first, then you need to configure it in the .env file.
+You must configure the email credentials to send emails, in the .env file.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## How to install data base
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+    composer install
+    php artisan migrate
+    php artisan db:seed
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Run the app
 
-## Learning Laravel
+    php artisan serve
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# REST API PAYMENT CLIENTE
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Following we have a sequence of requests that will be used to test the API.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## User Login
 
-## Laravel Sponsors
+### Request
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+`POST /api/payments`
 
-### Premium Partners
+    curl --request POST \
+        --url http://localhost:8000/api/login \
+        --header 'Content-Type: application/json' \
+        --data '{"user": "admin@example.com","password": "123456"}'
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Response
 
-## Contributing
+    {
+        "user": {
+            "id": 1,
+            "name": "Web Administrator",
+            "email": "admin@example.com",
+            "email_verified_at": null,
+            "created_at": "2022-10-17T22:02:44.000000Z",
+            "updated_at": null
+        },
+        "token": "1|kQ3srQniIUo0814uekjUJekAT644W7E0Axkrkc7q"
+    }
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Get list of Clients
 
-## Code of Conduct
+### Request
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+`GET /api/clients`
 
-## Security Vulnerabilities
+    curl --request GET \
+        --url 'http://localhost:8000/api/payments?client=3' \
+        --header 'Authorization: Bearer 1|kQ3srQniIUo0814uekjUJekAT644W7E0Axkrkc7q'
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Response
 
-## License
+    [
+        {
+            "id": 1,
+            "email": "client01@example.com",
+            "join_date": "2022-01-01"
+        },
+        {
+            "id": 2,
+            "email": "client02@example.com",
+            "join_date": "2022-01-01"
+        },
+        {
+            "id": 3,
+            "email": "client03@example.com",
+            "join_date": "2022-01-01"
+        }
+    ]
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Create a new Client
+
+### Request
+
+`POST /api/clients`
+
+    curl --request POST \
+        --url http://localhost:8000/api/clients \
+        --header 'Authorization: Bearer 1|kQ3srQniIUo0814uekjUJekAT644W7E0Axkrkc7q' \
+        --header 'Content-Type: application/json' \
+        --data '{
+            "email": "client04@example.com"
+        }'
+
+### Response
+
+    {
+        "email": "client04@example.com",
+        "join_date": "2022-10-17",
+        "updated_at": "2022-10-17T05:54:57.000000Z",
+        "created_at": "2022-10-17T05:54:57.000000Z",
+        "id": 4
+    }
+    
+## Get list of Payments by Clients
+
+### Request
+
+`GET /api/payments?client=3`
+
+    curl --request GET \
+        --url 'http://localhost:8000/api/payments?client=3' \
+        --header 'Authorization: Bearer 1|kQ3srQniIUo0814uekjUJekAT644W7E0Axkrkc7q'
+
+### Response
+    [
+        {
+            "uuid": "86d757bd-7aae-488f-a9cc-22f1cc268a44",
+            "payment_date": "2019-02-01",
+            "expires_at": "2019-03-01",
+            "status": "paid",
+            "user_id": 3,
+            "clp_usd": 810
+        }
+    ]
+
+## Create a new Paymnent
+
+### Request
+
+`POST /api/payments`
+
+    curl --request POST \
+        --url http://localhost:8000/api/payments \
+        --header 'Authorization: Bearer 1|kHqbthgEmRCyVg2ShurlO6DtveN6DIcxNLOj23CS' \
+        --header 'Content-Type: application/json' \
+        --data '{
+            "client_id": 2
+        }'
+
+### Response
+
+    {
+        "uuid": "65b30e46-e7d8-4c6b-baa2-82035496d4db",
+        "payment_date": "2022-10-17",
+        "expires_at": "2022-11-17",
+        "status": "65b30e46-e7d8-4c6b-baa2-82035496d4db",
+        "user_id": 2,
+        "clp_usd": null
+    }

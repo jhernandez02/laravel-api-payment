@@ -19,12 +19,12 @@ use App\Http\Controllers\Api\PaymentController;
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout',[AuthController::class,'logout']);
 
-//Route::group(['middleware'=>'auth:sanctum'],function(){
+Route::group(['middleware'=>'auth:sanctum'],function(){
     Route::get('/clients',[ClientController::class,'getAll']);
     Route::post('/clients',[ClientController::class,'store']);
     Route::get('/payments',[PaymentController::class,'getByClientId']);
     Route::post('/payments',[PaymentController::class,'store']);
-//});
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
